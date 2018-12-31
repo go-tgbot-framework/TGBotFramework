@@ -18,9 +18,9 @@ var isBotStart = false
 /*// 模組執行部份
 func moduleRunner(filename string) {
     theModule := plugin.Open(filename)
-    
+
     handle := theModule.Lookup("Handler")
-    
+
     handle.(func (string) {})()
 }*/
 
@@ -40,8 +40,8 @@ func botRunner(modlist []string, isClosed chan bool) {
 
 // 開關機器人部份
 func turnBot() {
-    var usrInput = input(turnBotIntroTxt)
-    
+    var usrInput = input(fmt.Sprintf(turnBotIntroTxt, isBotStart))
+
     switch usrInput {
         case "1":
             fmt.Print(botStarting)

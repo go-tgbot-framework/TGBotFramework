@@ -41,7 +41,8 @@ var setUpBotIntroTxt = ` ^TGBot 框架v
 // 字串使用位置：TGBot_BotRunner.go
 var turnBotIntroTxt = ` ^TGBot 框架v
 [開關介面]
-目前狀態：%s
+目前狀態：%v
+(true = 開啟 / false = 關閉)
 
 (1) 開啟機器人
 (2) 關閉機器人

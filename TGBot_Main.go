@@ -72,7 +72,7 @@ func main() {
         fmt.Printf(settingsParseFailed, solveWay_settingNotFound)
         os.Exit(1)
     }
-    
+
     // 進入主畫面
     intro()
 }

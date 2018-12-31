@@ -7,7 +7,7 @@ type Settings struct {
     // IdentifyName: 您想要用什麼名稱稱呼您的機器人？
     IdentifyName string
     // ModulePath: 欲使用模組的檔案位置。
-    EnabledModules string
+    ModulePath string
 }
  
 // 版本號碼
