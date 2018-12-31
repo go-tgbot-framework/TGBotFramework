@@ -14,7 +14,7 @@
 //
 // 參閱 docs/Modules/Module_Basic[(您熟悉的語言)].md 說明檔案
 // 得知更多資訊！:D
-package tgbotframework
+package TGBotLib
 
 // 基本函式：接收訊息函式 (最基本模式)
 //

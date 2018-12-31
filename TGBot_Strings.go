@@ -30,11 +30,23 @@ var setUpBotIntroTxt = ` ^TGBot 框架v
 [設定介面]
 
 (1) 機器人 Token 設定
-(2) 機器人的識別名稱
-(3) 返回上一頁
+(2) 返回上一頁
 (s) 儲存設定
 
-請輸入功能編號 (1-3,s)：`
+請輸入功能編號 (1-2,s)：`
+
+// setUpModuleIntroTxt: 機器人的模組設定介面。
+// 字串使用位置：TGBot_Modules.go
+var setUpModuleIntroTxt = ` ^TGBot 框架v
+[模組設定介面]
+目前載入之模組：%s
+
+(1) 變更模組
+(2) 設定模組
+(3) 模組相關資訊
+(4) 返回上一頁
+
+請輸入功能編號 (1-4)：`
 
 // turnBotIntroTxt: 機器人的開關介面。
 // %s (1): 機器人目前是開或關？
@@ -116,6 +128,27 @@ var botStarted = "\b\b\b完成。"
 // 字串使用位置：TGBot_BotRunner.go
 var botClosing = "關閉中…"
 
+// 若早已開啟則顯示此字串。
+// 字串使用位置：TGBot_BotRunner.go
+var alreadyStarted = "早已開啟，無須重複開啟。"
+
+// 若早已關閉則顯示此字串。
+// 字串使用位置：TGBot_BotRunner.go
+var alreadyClosed = "早已關閉，無須重複關閉。"
+
+// 當模組損壞、不存在時出現的文字。
+// 字串使用位置：TGBot_BotRunner.go
+var moduleNotFound = "\n模組可能不存在或損壞。"
+
+// 當模組不符合規範時出現的文字。
+// 字串使用位置：TGBot_BotRunner.go
+var moduleInvaild = "\n模組不符合規範，請聯絡模組製作者。"
+
+/* ========== */
+/* 機器人模組管理部份 */
+/* ========== */
+
+// 
 /* ========== */
 /* 共用錯誤文字部份 */
 /* ========== */

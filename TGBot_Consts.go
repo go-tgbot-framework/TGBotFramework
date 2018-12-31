@@ -4,14 +4,18 @@ package main
 type Settings struct {
     // Token: 機器人的 Token，可從 @BotFather 取得。
     Token string
-    // IdentifyName: 您想要用什麼名稱稱呼您的機器人？
-    IdentifyName string
-    // ModulePath: 欲使用模組的檔案位置。
-    ModulePath string
+    // ModuleName: 欲使用模組的檔案名稱 (位於 modules 資料夾)。
+    ModuleName string
 }
  
 // 版本號碼
-const VERSION = "[*SNAPSHOT*]"
+const VERSION = "0.1.0-beta"
 
 // 貢獻者名單
 const CONTRIBUTOR = `pan93412 <pan93412@gmail.com>, 2018`
+
+// settings.json 的預設資料
+const SettingsJson = `{
+    "Token": "",
+    "ModuleName": ""
+}`

@@ -40,8 +40,8 @@ func intro() {
         setUpBot()
         return
     case "3":
-        fmt.Println("尚未完工～")
-        break
+        setUpModule()
+        return
     case "4":
         os.Exit(0)
         break

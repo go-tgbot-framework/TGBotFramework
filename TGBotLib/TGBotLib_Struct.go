@@ -1,4 +1,15 @@
-package tgbotframework
+package TGBotLib
+
+// 基本建構體：Update_GetMe
+//
+// 如文件：https://core.telegram.org/bots/api#getme
+//  所說，就是一個 Result 裡面包著 User 的 JSON。
+//
+// 為讓部份建構體可被導出，因此部份名稱有修改過。請參考 `json:"xxx"`
+// 得知原本代表的項目。
+type Update_GetMe struct {
+    Result User `json:"result"`
+}
 
 // 基本建構體：Update
 //
@@ -13,7 +24,7 @@ type Update struct {
         EditedMessage     Message `json:"edited_message"`
         ChannelPost       Message `json:"channel_post"`
         EditedChannelPost Message `json:"edited_channel_post`
-    }
+    } `json:"result"`
 }
 
 // 基本建構體：Message
@@ -28,6 +39,7 @@ type Message struct {
     MessageID       int    `json:"message_id"`
     From            User   `json:"from"`
     Date            int    `json:"date"`
+    Chat            Chat   `json:"chat"`
     ForwardFrom     Chat   `json:"forward_from"`
     ForwardFromChat Chat   `json:"forward_from_chat"`
     ForwardDate     int    `json:"forward_date"`

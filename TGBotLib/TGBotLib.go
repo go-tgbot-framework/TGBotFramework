@@ -14,16 +14,16 @@
 //
 // 參閱 docs/Modules/Module_Basic[(您熟悉的語言)].md 說明檔案
 // 得知更多資訊！:D
-package tgbotframework
+package TGBotLib
 
 import (
-    "net/url"
-    "net/http"
-    "fmt"
-    "log"
-    "io/ioutil"
-    sc "strconv"
     "encoding/json"
+    "fmt"
+    "io/ioutil"
+    "log"
+    "net/http"
+    "net/url"
+    sc "strconv"
     "strings"
 )
 
@@ -34,7 +34,7 @@ import (
 // %s(2): 方法
 //
 const APIURL = "https://api.telegram.org/bot%s/%s"
-    
+
 // 基本函式：接收訊息函式
 //
 // 請參考文件：
@@ -43,7 +43,7 @@ const APIURL = "https://api.telegram.org/bot%s/%s"
 // token: 機器人 (從 @botFather 取得的) Token
 //
 // offset: 若不打算設定 offset，請傳入 -1。
-// 
+//
 // limit: 若不打算設定 limit，請傳入 -1。
 //
 // timeout: 若不打算設定 timeout，請傳入 -1。
@@ -51,7 +51,7 @@ const APIURL = "https://api.telegram.org/bot%s/%s"
 // clean_prev_msg: 是否透過設定上一個接收的 offset 來防止已抓取訊息再次出現。
 // 可參閱：https://core.telegram.org/bots/faq#long-polling-gives-me-the-same-updates-again-and-again
 //
-// 回傳內容：伺服器收到回應後傳回訊息。
+// 回傳內容：Update 建構體。
 func GetUpdates(token string, offset, limit, timeout int, clean_prev_msg bool) *Update {
     var update_obj = new(Update)
     var params = make(url.Values)
@@ -64,15 +64,33 @@ func GetUpdates(token string, offset, limit, timeout int, clean_prev_msg bool) *
     if timeout != -1 {
         params.Add("timeout", sc.Itoa(timeout))
     }
-    
+
     err := json.Unmarshal([]byte(URLGet(fmt.Sprintf(APIURL, token, "getUpdates"), params)), &update_obj)
     if err != nil {
         panic(err)
     }
-    
+
     // 清除先前訊息吧 :D
     if clean_prev_msg && len(update_obj.Result) > 0 {
         GetUpdates(token, update_obj.Result[len(update_obj.Result)-1].UpdateID+1, -1, -1, false)
+    }
+
+    return update_obj
+}
+
+// 基本函式：取得機器人自身資訊
+//
+// token: 機器人 (從 @botFather 取得的) Token
+//
+// 回傳內容：Update_GetMe 建構體。
+func GetMe(token string) *Update_GetMe {
+    var update_obj = new(Update_GetMe)
+    
+    data := URLGet(fmt.Sprintf(APIURL, token, "getMe"), nil)
+    
+    err := json.Unmarshal([]byte(data), &update_obj)
+    if err != nil {
+        panic(err)
     }
     
     return update_obj
@@ -104,10 +122,9 @@ func SendMessage(
     if reply_to_message_id != -1 {
         params.Add("reply_to_message_id", sc.Itoa(reply_to_message_id))
     }
-    
+
     return URLGet(fmt.Sprintf(APIURL, token, "sendMessage"), params)
 }
-
 
 // 基本函式：轉傳訊息函式
 //
@@ -123,7 +140,7 @@ func ForwardMessage(token string, chat_id, from_chat_id int, disable_notificatio
     params.Add("from_chat_id", sc.Itoa(from_chat_id))
     params.Add("disable_notification", sc.FormatBool(disable_notification))
     params.Add("message_id", sc.Itoa(message_id))
-    
+
     return URLGet(fmt.Sprintf(APIURL, token, "forwardMessage"), params)
 }
 
@@ -168,8 +185,8 @@ func SendMedia(token, method string, chat_id int, fileurl, caption string,
     if reply_to_message_id != -1 {
         params.Add("reply_to_message_id", sc.Itoa(reply_to_message_id))
     }
-    
-    return URLGet(fmt.Sprintf(APIURL, token, "send" + urlMethod), params)
+
+    return URLGet(fmt.Sprintf(APIURL, token, "send"+urlMethod), params)
 }
 
 // 基本函式：URL GET 工具
@@ -181,11 +198,11 @@ func URLGet(url string, param url.Values) string {
     var urlParams = param.Encode()
     // URL Format: (URL)?(Params)
     resp, err := http.Get(url + "?" + urlParams)
-    
+
     if err != nil {
         log.Fatal(err)
     }
-    
+
     if resp.StatusCode != 200 {
         rawcontent := resp.Body
         content, err_statuscode := ioutil.ReadAll(rawcontent)
@@ -195,14 +212,14 @@ func URLGet(url string, param url.Values) string {
         rawcontent.Close()
         log.Fatalf(HTTPCodeError, resp.StatusCode, content)
     }
-    
+
     data := resp.Body
     cont, err2 := ioutil.ReadAll(data)
-    
+
     if err2 != nil {
         log.Fatal(err2)
     }
-    
+
     data.Close()
     return string(cont)
 }

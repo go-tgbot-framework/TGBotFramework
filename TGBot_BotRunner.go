@@ -1,13 +1,14 @@
 package main
 
 import (
-    "time"
     "fmt"
+    "plugin"
+    "time"
 )
 
 /* 相關變數 */
 
-// 傳給 botRunner 的頻道 (channel)ww
+// 傳給 botRunner 的頻道 (channel)wwl
 // 當 botRunner 準備關閉時會關閉該頻道 (並傳出一個 `true`)。
 var closeChecker = make(chan bool, 1)
 
@@ -17,19 +18,28 @@ var isBotStart = false
 
 // 模組執行部份
 func moduleRunner(filename string) {
-    theModule := plugin.Open(filename)
+    theModule, err := plugin.Open(filename)
+    
+    if err != nil {
+        panic(moduleNotFound)
+    }
+    
+    handle, err := theModule.Lookup("Handler")
+    
+    if err != nil {
+        panic(moduleInvaild)
+    }
 
-    handle := theModule.Lookup("Handler")
-
-    handle.(func (string) {})()
+    handle.(func (string))(JSONData.Token)
 }
 
 // 啟動機器人函式
 func botRunner(isClosed chan bool) {
+    isClosed <- false
     for {
         if isBotStart {
             // JSONData 設定 -> TGBot_Main.go
-            moduleRunner(JSONData.ModulePath)
+            moduleRunner("modules/" + JSONData.ModuleName)
         } else {
             isClosed <- true
             return
@@ -43,30 +53,47 @@ func turnBot() {
 
     switch usrInput {
         case "1":
-            fmt.Print(botStarting)
+            if isBotStart == true {
+                fmt.Println(alreadyStarted)
+            } else {
+                fmt.Print(botStarting)
+                isBotStart = true
+                go botRunner(closeChecker)
+                for data := range closeChecker {
+                    if data == false {
+                        fmt.Println(botStarted)
+                        break
+                    }
+                }
+            }
             time.Sleep(1 * time.Second)
-            isBotStart = true
-            go botRunner(closeChecker)
-            fmt.Println(botStarted)
-            // 重新執行一次此函式
+            // 重新顯示選單
             turnBot()
             return
         case "2":
-            fmt.Print(botClosing)
-            time.Sleep(1 * time.Second)
-            isBotStart = false
-            for data := range closeChecker {
-                if data == true {
-                    fmt.Println(botStarted)
-                    break
+            if isBotStart == false {
+                fmt.Println(alreadyClosed)
+            } else {
+                fmt.Print(botClosing)
+                isBotStart = false
+                for data := range closeChecker {
+                    if data == true {
+                        fmt.Println(botStarted)
+                        break
+                    }
                 }
             }
-            // 重新執行一次此函式
+            time.Sleep(1 * time.Second)
+            // 重新顯示選單
             turnBot()
             return
         case "3":
             // intro() 主選單函式 -> TGBot_Main.go
             intro()
+            return
+        default:
+            fmt.Printf(usrInputWrong, usrInput)
+            turnBot()
             return
     }
 }
