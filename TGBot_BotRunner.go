@@ -7,7 +7,7 @@ import (
 
 /* 相關變數 */
 
-// 傳給 botRunner 的頻道 (channel)
+// 傳給 botRunner 的頻道 (channel)ww
 // 當 botRunner 準備關閉時會關閉該頻道 (並傳出一個 `true`)。
 var closeChecker = make(chan bool, 1)
 
@@ -15,23 +15,22 @@ var closeChecker = make(chan bool, 1)
 // 將會進入關閉程序。
 var isBotStart = false
 
-/*// 模組執行部份
+// 模組執行部份
 func moduleRunner(filename string) {
     theModule := plugin.Open(filename)
 
     handle := theModule.Lookup("Handler")
 
     handle.(func (string) {})()
-}*/
+}
 
 // 啟動機器人函式
-func botRunner(modlist []string, isClosed chan bool) {
+func botRunner(isClosed chan bool) {
     for {
         if isBotStart {
-            fmt.Println("I am still running!!! :D")
-            time.Sleep(2 * time.Second)
+            // JSONData 設定 -> TGBot_Main.go
+            moduleRunner(JSONData.ModulePath)
         } else {
-            fmt.Println("Oh no. :(")
             isClosed <- true
             return
         }
@@ -47,8 +46,9 @@ func turnBot() {
             fmt.Print(botStarting)
             time.Sleep(1 * time.Second)
             isBotStart = true
-            go botRunner(nil, closeChecker)
+            go botRunner(closeChecker)
             fmt.Println(botStarted)
+            // 重新執行一次此函式
             turnBot()
             return
         case "2":
@@ -61,9 +61,11 @@ func turnBot() {
                     break
                 }
             }
+            // 重新執行一次此函式
             turnBot()
             return
         case "3":
+            // intro() 主選單函式 -> TGBot_Main.go
             intro()
             return
     }
