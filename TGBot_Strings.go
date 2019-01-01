@@ -76,9 +76,7 @@ var settingsParsing = `正在解析 settings.json 的資料…… [解析中]   
 //     否則 settingsParsing 的未完全覆蓋文字將會繼續留在上方。
 // %s (1): 解決方法，例如「請從 template 資料夾複製一個 settings.json 至本程式目錄。」
 // 字串使用位置：TGBot_Main.go
-var settingsParseFailed = "\r正在解析 settings.json 的資料…… [錯誤]    \n解決方法：%s\n"
-var solve_settingNotFound = "請從 template 資料夾複製一個 settings.json 至本程式目錄。"
-var solve_settingIsInvaild = "請檢查您的設定檔案是否正確且有效。"
+var settingsParseFailed = "\r正在解析 settings.json 的資料…… [錯誤]    \n將重新建立 settings.json 檔案。"
 
 // 解析成功會顯示的文字。
 // (!) 請保證該文字比 settingsParsing 長，可用空白加長。

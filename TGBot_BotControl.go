@@ -38,7 +38,7 @@ func botRunner(isClosed chan bool) {
     isClosed <- false
     for {
         if isBotStart {
-            // JSONData 設定 -> TGBot_Main.go
+            // JSONData 設定 -> TGBot_Init.go
             moduleRunner(ModulesPath + JSONData.ModuleName)
         } else {
             isClosed <- true

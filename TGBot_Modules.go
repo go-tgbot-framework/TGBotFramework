@@ -57,7 +57,7 @@ func modifyModule() {
         }
     }
 
-    // JSONData -> TGBot_Main.go
+    // JSONData -> TGBot_Init.go
     fmt.Printf(currentModule, JSONData.ModuleName)
     moduleName := input(enterModuleName)
 

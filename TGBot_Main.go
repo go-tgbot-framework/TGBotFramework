@@ -6,13 +6,7 @@ package main
 import (
     "fmt"
     "os"
-    "io/ioutil"
-    "encoding/json"
 )
-
-// settings.json 設定檔解析出的資料存放位置
-// Settings 建構體 -> TGBot_Consts.go
-var JSONData = new(Settings)
 
 // input: 類似 Python 的 input() 函式
 func input(prompt string) string {
@@ -53,24 +47,8 @@ func intro() {
 }
 
 func main() {
-    // settingsParsing 字串 -> TGBot_Strings.go
-    fmt.Printf(settingsParsing)
-    rawJsonData, err := ioutil.ReadFile(SettingsFilename)
-
-    if err == nil {
-        if err := json.Unmarshal(rawJsonData, &JSONData); err == nil {
-            // settingsParseSuccess 字串 -> TGBot_Strings.go
-            fmt.Println(settingsParseSuccess)
-        } else {
-            // settingsParseFailed, solve_settingIsInvaild 字串 -> TGBot_Strings.go
-            fmt.Printf(settingsParseFailed, solve_settingIsInvaild)
-            os.Exit(1)
-        }
-    } else {
-        // settingsParseFailed, solve_settingNotFound 字串 -> TGBot_Strings.go
-        fmt.Printf(settingsParseFailed, solve_settingNotFound)
-        os.Exit(1)
-    }
+    // 初始化
+    TGBotInit()
 
     // 進入主畫面
     intro()
