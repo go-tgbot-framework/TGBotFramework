@@ -6,7 +6,6 @@ package main
 import (
     "fmt"
     "os"
-    _ "./tgbotframework"
     "io/ioutil"
     "encoding/json"
 )
@@ -32,15 +31,15 @@ func intro() {
     var usrinput = input(fmt.Sprintf(introTxt, VERSION, CONTRIBUTOR))
     switch usrinput {
     case "1":
-        // turnBot() 函式 -> TGBot_BotRunner.go
-        turnBot()
+        // botControl() 函式 -> TGBot_BotControl.go
+        botControl()
         return
     case "2":
         // setUpBot() 函式 -> TGBot_BotSettings.go
         setUpBot()
         return
     case "3":
-        setUpModule()
+        moduleControl()
         return
     case "4":
         os.Exit(0)
@@ -56,20 +55,20 @@ func intro() {
 func main() {
     // settingsParsing 字串 -> TGBot_Strings.go
     fmt.Printf(settingsParsing)
-    rawJsonData, err := ioutil.ReadFile("settings.json")
+    rawJsonData, err := ioutil.ReadFile(SettingsFilename)
 
     if err == nil {
         if err := json.Unmarshal(rawJsonData, &JSONData); err == nil {
             // settingsParseSuccess 字串 -> TGBot_Strings.go
             fmt.Println(settingsParseSuccess)
         } else {
-            // settingsParseFailed, solveWay_settingIsInvaild 字串 -> TGBot_Strings.go
-            fmt.Printf(settingsParseFailed, solveWay_settingIsInvaild)
+            // settingsParseFailed, solve_settingIsInvaild 字串 -> TGBot_Strings.go
+            fmt.Printf(settingsParseFailed, solve_settingIsInvaild)
             os.Exit(1)
         }
     } else {
-        // settingsParseFailed, solveWay_settingNotFound 字串 -> TGBot_Strings.go
-        fmt.Printf(settingsParseFailed, solveWay_settingNotFound)
+        // settingsParseFailed, solve_settingNotFound 字串 -> TGBot_Strings.go
+        fmt.Printf(settingsParseFailed, solve_settingNotFound)
         os.Exit(1)
     }
 

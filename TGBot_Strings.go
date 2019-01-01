@@ -37,7 +37,7 @@ var setUpBotIntroTxt = ` ^TGBot 框架v
 
 // setUpModuleIntroTxt: 機器人的模組設定介面。
 // 字串使用位置：TGBot_Modules.go
-var setUpModuleIntroTxt = ` ^TGBot 框架v
+var moduleControlIntroTxt = ` ^TGBot 框架v
 [模組設定介面]
 目前載入之模組：%s
 
@@ -48,10 +48,10 @@ var setUpModuleIntroTxt = ` ^TGBot 框架v
 
 請輸入功能編號 (1-4)：`
 
-// turnBotIntroTxt: 機器人的開關介面。
+// botControlIntroTxt: 機器人的開關介面。
 // %s (1): 機器人目前是開或關？
-// 字串使用位置：TGBot_BotRunner.go
-var turnBotIntroTxt = ` ^TGBot 框架v
+// 字串使用位置：TGBot_BotControl.go
+var botControlIntroTxt = ` ^TGBot 框架v
 [開關介面]
 目前狀態：%v
 (true = 開啟 / false = 關閉)
@@ -77,8 +77,8 @@ var settingsParsing = `正在解析 settings.json 的資料…… [解析中]   
 // %s (1): 解決方法，例如「請從 template 資料夾複製一個 settings.json 至本程式目錄。」
 // 字串使用位置：TGBot_Main.go
 var settingsParseFailed = "\r正在解析 settings.json 的資料…… [錯誤]    \n解決方法：%s\n"
-var solveWay_settingNotFound = "請從 template 資料夾複製一個 settings.json 至本程式目錄。"
-var solveWay_settingIsInvaild = "請檢查您的設定檔案是否正確且有效。"
+var solve_settingNotFound = "請從 template 資料夾複製一個 settings.json 至本程式目錄。"
+var solve_settingIsInvaild = "請檢查您的設定檔案是否正確且有效。"
 
 // 解析成功會顯示的文字。
 // (!) 請保證該文字比 settingsParsing 長，可用空白加長。
@@ -115,45 +115,88 @@ var writeSucceed = "\r儲存設定值成功，將返回設定介面……"
 /* ========== */
 
 // 呼叫機器人函式時會顯示的文字。
-// 字串使用位置：TGBot_BotRunner.go
+// 字串使用位置：TGBot_BotControl.go
 var botStarting = "開啟中…"
 
 // 呼叫完成機器人函式會顯示的文字。
 // (!) 此 \b\b\b 的意思是將「中…」覆蓋成「完成。」（中文字佔兩個 bytes）
 //     您可以選擇不寫三個 \b，這樣結果就是在「中…」之後增加文字。
-// 字串使用位置：TGBot_BotRunner.go
+// 字串使用位置：TGBot_BotControl.go
 var botStarted = "\b\b\b完成。"
 
 // 要求關閉機器人函式時會顯示的文字。
-// 字串使用位置：TGBot_BotRunner.go
+// 字串使用位置：TGBot_BotControl.go
 var botClosing = "關閉中…"
 
 // 若早已開啟則顯示此字串。
-// 字串使用位置：TGBot_BotRunner.go
+// 字串使用位置：TGBot_BotControl.go
 var alreadyStarted = "早已開啟，無須重複開啟。"
 
 // 若早已關閉則顯示此字串。
-// 字串使用位置：TGBot_BotRunner.go
+// 字串使用位置：TGBot_BotControl.go
 var alreadyClosed = "早已關閉，無須重複關閉。"
 
 // 當模組損壞、不存在時出現的文字。
-// 字串使用位置：TGBot_BotRunner.go
+// 字串使用位置：TGBot_BotControl.go, TGBot_Modules.go
 var moduleNotFound = "\n模組可能不存在或損壞。"
 
 // 當模組不符合規範時出現的文字。
-// 字串使用位置：TGBot_BotRunner.go
+// 字串使用位置：TGBot_BotControl.go, TGBot_Modules.go
 var moduleInvaild = "\n模組不符合規範，請聯絡模組製作者。"
+
+// 檢視
 
 /* ========== */
 /* 機器人模組管理部份 */
 /* ========== */
 
-// 
+// 當 modules 資料夾不存在時。
+// 字串使用位置：TGBot_Modules.go
+var modulesPathNotFound = "\nmodules 資料夾不存在，請在您執行此程式的位置建立一個「modules」資料夾，並參閱 docs/Usage/Use_Modules.md 如何下載並安裝模組。"
+
+// 「變更模組」的說明文字
+// 字串使用位置：TGBot_Modules.go
+var modifyModuleHelpTxt = `
+以下為所有可以使用的模組，請輸
+入以下所顯示的模組之模組名稱。
+==============================
+`
+
+// 目前使用的模組。
+// %s (1): 目前所使用的模組
+// 建議不要刪除「\n」，此為排版修飾。
+// 字串使用位置：TGBot_Modules.go
+var currentModule = "\n目前使用的模組：%s\n"
+
+// 請求使用者輸入上方模組之其中一個的提示字串。
+var enterModuleName = "請輸入要使用的模組名稱 (留空代表不變更)："
+
+// 若找不到模組時顯示的字串。
+// %s (1): 使用者輸入的模組
+// 字串使用位置：TGBot_Modules.go
+var modNotFound = "模組「%s」不存在。\n"
+
+// 再次確認是否為這個模組的提示字串。
+// 字串使用位置：TGBot_Modules.go
+var confirmModIsCorrect = "確定是這個模組：%s？(Y/n)："
+
+// 模組資訊
+// 字串使用位置：TGBot_Modules.go
+var moduleInfo = `
+[%s 模組的相關資訊]
+
+模組名稱：%s
+模組版本：%s
+模組作者：%s
+模組描述：%s
+
+`
+
 /* ========== */
 /* 共用錯誤文字部份 */
 /* ========== */
 
 // 若使用者輸入錯選項編號會顯示的文字。
 // %s (1): 使用者所輸入錯的內容。
-// 字串使用位置：TGBot_Main.go, TGBot_BotSettings.go, TGBot_BotRunner.go
+// 字串使用位置：TGBot_Main.go, TGBot_BotSettings.go, TGBot_BotControl.go, TGBot_Modules.go
 var usrInputWrong = "您輸入錯誤了！您輸入了：「%s」，但並沒有該選項。\n"

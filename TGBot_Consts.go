@@ -7,7 +7,7 @@ type Settings struct {
     // ModuleName: 欲使用模組的檔案名稱 (位於 modules 資料夾)。
     ModuleName string
 }
- 
+
 // 版本號碼
 const VERSION = "0.1.0-beta"
 
@@ -19,3 +19,9 @@ const SettingsJson = `{
     "Token": "",
     "ModuleName": ""
 }`
+
+// 設定檔檔案名稱
+const SettingsFilename = "settings.json"
+
+// 模組的存放位置
+const ModulesPath = "modules/"

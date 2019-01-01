@@ -3,7 +3,6 @@ package main
 import (
     "io/ioutil"
     "encoding/json"
-    "time"
     "fmt"
 )
 
@@ -15,10 +14,9 @@ func writeSettings() {
     if errWhenMarshal != nil {
         panic(errWhenMarshal)
     }
-    if errWhenWriting := ioutil.WriteFile("settings.json", data, 0755); errWhenWriting != nil {
+    if errWhenWriting := ioutil.WriteFile(SettingsFilename, data, 0755); errWhenWriting != nil {
         panic(errWhenWriting)
     }
-    time.Sleep(1 * time.Second)
     fmt.Println(writeSucceed)
 }
 
