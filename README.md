@@ -9,5 +9,5 @@
 1. 執行 `go build -o TGBot.run *.go`
 2. 執行 `./TGBot.run` 即可。
 
-* 目前尚不支援 Windows 作業系統，若使用
+> 目前尚不支援 Windows 作業系統，若使用
   Windows 10 可使用 Bash 子系統使用。:D
