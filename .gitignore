@@ -1,2 +1,7 @@
 *.*kate-swp
-USELESS
+.directory
+
+# 使用者設定
+*.out
+modules/
+settings.json

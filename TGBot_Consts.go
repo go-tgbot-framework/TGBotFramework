@@ -9,7 +9,7 @@ type Settings struct {
 }
 
 // 版本號碼
-const VERSION = "0.1.0-beta"
+const VERSION = "0.7.0-beta"
 
 // 貢獻者名單
 const CONTRIBUTOR = `pan93412 <pan93412@gmail.com>, 2018`
