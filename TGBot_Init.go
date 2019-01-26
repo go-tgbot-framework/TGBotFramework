@@ -23,28 +23,25 @@ func createSettings() bool {
 
 // 初始化 Telegram Bot Framework 的函式
 func TGBotInit() {
-    // 檢查 modules 資料夾是否存在。
-    fmt.Print("正在檢查 modules 資料夾……")
     modulesFolder, errWhenStat := os.Stat(ModulesPath)
     if errWhenStat != nil {
-        fmt.Println("\rmodules 資料夾不存在。將自動建立。   ")
+        fmt.Println(init_ModulesFolderNotExists)
         errMkdir := os.Mkdir(ModulesPath, 0755)
         if errMkdir != nil {
-            panic("請確保此程式所在資料夾可供寫入。")
-            fmt.Println("請重新啟動程式套用設定。")
+            panic(init_ReadOnly)
+        } else {
+            fmt.Println(init_restartToApply)
             os.Exit(1)
         }
     } else if !modulesFolder.IsDir() {
-        log.Println("\rmodules 不是個資料夾。將移除現有的 modules 檔案後重新建立。   ")
+        log.Println(init_NotAFolder)
         errRM := os.Remove(ModulesPath)
         errMkdir := os.Mkdir(ModulesPath, 0755)
         if errRM != nil || errMkdir != nil {
-            panic("請確保此程式所在資料夾可供寫入。")
+            panic(init_ReadOnly)
         }
-        fmt.Println("請重新啟動程式套用設定。")
+        fmt.Println(init_restartToApply)
         os.Exit(1)
-    } else {
-        fmt.Println("\rmodules 資料夾存在。        ")
     }
     
     // 檢查 settings.json 是否存在
@@ -55,16 +52,16 @@ func TGBotInit() {
     if errReadFile != nil {
         fmt.Println(settingsParseFailed)
         if !createSettings() {
-            panic("請確保此程式所在資料夾可供寫入。")
+            panic(init_ReadOnly)
         }
-        fmt.Println("請重新啟動程式套用設定。")
+        fmt.Println(init_restartToApply)
         os.Exit(1)
     } else if errUnmarshal := json.Unmarshal(rawJsonData, &JSONData); errUnmarshal != nil {
         fmt.Println(settingsParseFailed)
         if !createSettings() {
-            panic("請確保此程式所在資料夾可供寫入。")
+            panic(init_ReadOnly)
         }
-        fmt.Println("請重新啟動程式套用設定。")
+        fmt.Println(init_restartToApply)
         os.Exit(1)
     } else {
         fmt.Println(settingsParseSuccess)

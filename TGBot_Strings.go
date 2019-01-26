@@ -142,8 +142,6 @@ var moduleNotFound = "\n模組可能不存在或損壞。"
 // 字串使用位置：TGBot_BotControl.go, TGBot_Modules.go
 var moduleInvaild = "\n模組不符合規範，請聯絡模組製作者。"
 
-// 檢視
-
 /* ========== */
 /* 機器人模組管理部份 */
 /* ========== */
@@ -159,6 +157,17 @@ var modifyModuleHelpTxt = `
 入以下所顯示的模組之模組名稱。
 ==============================
 `
+
+// 若模組被偵測到無法使用，則顯示該字串。
+// %s (1): 模組檔名
+// %s (2): 模組名稱
+// 字串使用位置：TGBot_Modules.go
+var moduleChoiceText = "模組 | %s (%s)\n"
+
+// 若模組被偵測到可使用，則顯示此文字供使用者選擇。
+// %s (1): 模組檔名
+// 字串使用位置：TGBot_Modules.go
+var warningModuleInvaild = "警告 | 模組目錄的 %s 模組是損壞的！\n"
 
 // 目前使用的模組。
 // %s (1): 目前所使用的模組
@@ -189,6 +198,26 @@ var moduleInfo = `
 模組描述：%s
 
 `
+
+/* ========== */
+/* 初始化部份  */
+/* ========== */
+
+// 若 modules 資料夾不存在時。
+// 字串使用位置：TGBot_Init.go
+var init_ModulesFolderNotExists = "modules 資料夾不存在。將自動建立。   "
+
+// 若 modules 是個檔案，正在刪除檔案後重新建立資料夾時。
+// 字串使用位置：TGBot_Init.go
+var init_NotAFolder = "\rmodules 不是個資料夾。將移除現有的 modules 檔案後重新建立。   "
+
+// 若 modules 資料夾或 settings.json 無法建立時。
+// 字串使用位置：TGBot_Init.go
+var init_ReadOnly = "請確保此程式所在資料夾可供寫入。"
+
+// 若 modules 資料夾或 settings.json 建立成功，要求重啟程式時。
+// 字串使用位置：TGBot_Init.go
+var init_restartToApply = "請重新啟動程式套用設定。"
 
 /* ========== */
 /* 共用錯誤文字部份 */

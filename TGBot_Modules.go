@@ -6,23 +6,24 @@ import (
     "io/ioutil"
     "strings"
     "os"
+    "errors"
 )
 
 // 取得模組資訊
-func getModInfo(filename string) map[string]string {
+func getModInfo(filename string) (map[string]string, error) {
     theModule, err := plugin.Open(filename)
 
     if err != nil {
-        panic(moduleNotFound)
+        return nil, errors.New(moduleNotFound)
     }
 
     info, err := theModule.Lookup("Info")
 
     if err != nil {
-        panic(moduleInvaild)
+        return nil, errors.New(moduleInvaild)
     }
 
-    return info.(func () map[string]string)()
+    return info.(func () map[string]string)(), nil
 }
 
 // 模組設定區塊
@@ -53,7 +54,12 @@ func modifyModule() {
 
     for _, folderInfo := range folderInf {
         if strings.Contains(folderInfo.Name(), ".so") {
-            fmt.Printf("模組 | %s (%s)\n", folderInfo.Name(), getModInfo(ModulesPath + folderInfo.Name())["Name"])
+            modInfo, errModInf := getModInfo(ModulesPath + folderInfo.Name())
+            if errModInf != nil {
+                fmt.Printf(warningModuleInvaild, folderInfo.Name())
+                continue
+            }
+            fmt.Printf(moduleChoiceText, folderInfo.Name(), modInfo["Name"])
         }
     }
 
@@ -68,7 +74,12 @@ func modifyModule() {
             return
         }
 
-        confirm := input(fmt.Sprintf(confirmModIsCorrect, getModInfo(ModulesPath + moduleName)["Name"]))
+        modName, errSetUpMod := getModInfo(ModulesPath + moduleName)
+        if errSetUpMod != nil {
+            panic(errSetUpMod)
+        }
+        
+        confirm := input(fmt.Sprintf(confirmModIsCorrect, modName["Name"]))
         if confirm == "Y" || confirm == "" {
             // JSONData -> TGBot_Main.go
             JSONData.ModuleName = moduleName
@@ -95,7 +106,7 @@ func moduleControl() {
             moduleControl()
             return
         case "3":
-            modInfo := getModInfo(ModulesPath + JSONData.ModuleName)
+            modInfo, _ := getModInfo(ModulesPath + JSONData.ModuleName)
             fmt.Printf(moduleInfo, JSONData.ModuleName, modInfo["Name"], modInfo["Version"],
                        modInfo["Author"], modInfo["Description"])
             moduleControl()
